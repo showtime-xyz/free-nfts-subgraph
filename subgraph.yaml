@@ -1,0 +1,23 @@
+specVersion: 0.0.1
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: TimeCop
+    network: matic
+    source:
+      address: "0x50c001E4eB10801968F6640E1537D63a557e5d72"
+      abi: TimeCop
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - TimeLimitSet
+      abis:
+        - name: TimeCop
+          file: ./abis/TimeCop.json
+      eventHandlers:
+        - event: TimeLimitSet(address,uint256)
+          handler: handleTimeLimitSet
+      file: ./src/time-cop.ts
