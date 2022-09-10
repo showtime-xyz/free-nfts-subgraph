@@ -1,6 +1,12 @@
-type ExampleEntity @entity {
-  id: ID!
-  count: BigInt!
-  collection: Bytes! # address
+type FreeNFTDrop @entity(immutable: true) {
+  "a Free NFT Drop is an ERC721 contract, we use the contract address as the id"
+  id: Bytes!
+
+  creator: Bytes! # address
+  editionSize: BigInt! # uint256
   deadline: BigInt! # uint256
+  name: String
+  description: String
+  animationUrl: String
+  imageUrl: String
 }

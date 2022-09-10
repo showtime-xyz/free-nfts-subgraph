@@ -1,23 +1,48 @@
-specVersion: 0.0.1
+specVersion: 0.0.4
+description: Free NFT drops on showtime.xyz
+repository: https://github.com/showtime-xyz/subgraphs
+features:
+  - nonFatalErrors
 schema:
   file: ./schema.graphql
 dataSources:
+  # - kind: ethereum
+  #   name: TimeCop
+  #   network: matic
+  #   source:
+  #     address: "0x50c001E4eB10801968F6640E1537D63a557e5d72"
+  #     abi: TimeCop
+  #     startBlock: 29040259
+    # mapping:
+    #   kind: ethereum/events
+    #   apiVersion: 0.0.6
+    #   language: wasm/assemblyscript
+    #   entities:
+    #     - FreeNFTDrop
+    #   abis:
+    #     - name: TimeCop
+    #       file: ./abis/TimeCop.json
+    #   eventHandlers:
+    #     - event: TimeLimitSet(address,uint256)
+    #       handler: handleTimeLimitSet
+      # file: ./src/time-cop.ts
   - kind: ethereum
-    name: TimeCop
+    name: SingleEditionMintableCreator
     network: matic
     source:
-      address: "0x50c001E4eB10801968F6640E1537D63a557e5d72"
-      abi: TimeCop
+      address: "0x4500590AfC7f12575d613457aF01F06b1eEE57a3"
+      abi: SingleEditionMintableCreator
+      startBlock: 29040259
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.5
+      apiVersion: 0.0.6
       language: wasm/assemblyscript
       entities:
-        - TimeLimitSet
+        - FreeNFTDrop
       abis:
-        - name: TimeCop
-          file: ./abis/TimeCop.json
+        - name: SingleEditionMintableCreator
+          file: ./abis/SingleEditionMintableCreator.json
       eventHandlers:
-        - event: TimeLimitSet(address,uint256)
-          handler: handleTimeLimitSet
-      file: ./src/time-cop.ts
+        - event: CreatedEdition(indexed uint256,indexed address,uint256,address)
+          handler: handleCreatedEdition
+      file: ./src/single-edition-mintable-creator.ts
