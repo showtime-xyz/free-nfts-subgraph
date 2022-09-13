@@ -27,7 +27,12 @@ function processTimeLimitSet(event: CreatedEditionEvent, timeLimitSet: ethereum.
   let entity = new FreeNFTDrop(collectionAddress);
   entity.creator = event.params.creator
   entity.editionSize = event.params.editionSize
-  entity.deadline = BigInt.fromUnsignedBytes(Bytes.fromHexString(timeLimitSet.data.toHexString().slice(2 + 64, 2 + 128)));
+
+  // extract and reverse() because the data is big endian
+  let deadlineHexStr = timeLimitSet.data.toHexString().slice(2 + 64, 2 + 128);
+  let deadlineBytes = Bytes.fromHexString(deadlineHexStr);
+  let deadlineBytesLittleEndian = Bytes.fromUint8Array(deadlineBytes.reverse());
+  entity.deadline = BigInt.fromUnsignedBytes(deadlineBytesLittleEndian);
 
   let edition = SingleEditionMintable.bind(collectionAddress);
   entity.name = edition.name();
