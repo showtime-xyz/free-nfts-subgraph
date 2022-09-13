@@ -35,7 +35,7 @@ dataSources:
       startBlock: 29040259
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.6
+      apiVersion: 0.0.7
       language: wasm/assemblyscript
       entities:
         - FreeNFTDrop
@@ -45,4 +45,5 @@ dataSources:
       eventHandlers:
         - event: CreatedEdition(indexed uint256,indexed address,uint256,address)
           handler: handleCreatedEdition
+          receipt: true
       file: ./src/single-edition-mintable-creator.ts
