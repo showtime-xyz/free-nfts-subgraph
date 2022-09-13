@@ -25,6 +25,7 @@ function processTimeLimitSet(event: CreatedEditionEvent, timeLimitSet: ethereum.
   }
 
   let entity = new FreeNFTDrop(collectionAddress);
+  entity.createdAt = event.block.timestamp;
   entity.editionSize = event.params.editionSize
 
   // extract and reverse() because the data is big endian
