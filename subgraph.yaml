@@ -28,4 +28,4 @@ dataSources:
         - event: CreatedEdition(indexed uint256,indexed address,uint256,address)
           handler: handleCreatedEdition
           receipt: true
-      file: ./src/single-edition-mintable-creator.ts
+      file: ./src/event-handlers.ts
