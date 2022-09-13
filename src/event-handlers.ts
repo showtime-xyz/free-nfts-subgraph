@@ -25,7 +25,6 @@ function processTimeLimitSet(event: CreatedEditionEvent, timeLimitSet: ethereum.
   }
 
   let entity = new FreeNFTDrop(collectionAddress);
-  entity.creator = event.params.creator
   entity.editionSize = event.params.editionSize
 
   // extract and reverse() because the data is big endian
@@ -35,6 +34,8 @@ function processTimeLimitSet(event: CreatedEditionEvent, timeLimitSet: ethereum.
   entity.deadline = BigInt.fromUnsignedBytes(deadlineBytesLittleEndian);
 
   let edition = SingleEditionMintable.bind(collectionAddress);
+  // event.params.creator is Showtime's MetaEditionMinter, not the actual creator of the drop
+  entity.creator = edition.owner();
   entity.name = edition.name();
   entity.description = edition.description();
   entity.imageUrl = edition.getURIs().getValue0();
