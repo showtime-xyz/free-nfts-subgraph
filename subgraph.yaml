@@ -6,26 +6,6 @@ features:
 schema:
   file: ./schema.graphql
 dataSources:
-  # - kind: ethereum
-  #   name: TimeCop
-  #   network: matic
-  #   source:
-  #     address: "0x50c001E4eB10801968F6640E1537D63a557e5d72"
-  #     abi: TimeCop
-  #     startBlock: 29040259
-    # mapping:
-    #   kind: ethereum/events
-    #   apiVersion: 0.0.6
-    #   language: wasm/assemblyscript
-    #   entities:
-    #     - FreeNFTDrop
-    #   abis:
-    #     - name: TimeCop
-    #       file: ./abis/TimeCop.json
-    #   eventHandlers:
-    #     - event: TimeLimitSet(address,uint256)
-    #       handler: handleTimeLimitSet
-      # file: ./src/time-cop.ts
   - kind: ethereum
     name: SingleEditionMintableCreator
     network: matic
@@ -42,6 +22,8 @@ dataSources:
       abis:
         - name: SingleEditionMintableCreator
           file: ./abis/SingleEditionMintableCreator.json
+        - name: SingleEditionMintable
+          file: ./abis/SingleEditionMintable.json
       eventHandlers:
         - event: CreatedEdition(indexed uint256,indexed address,uint256,address)
           handler: handleCreatedEdition

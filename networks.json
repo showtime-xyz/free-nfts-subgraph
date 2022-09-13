@@ -5,6 +5,9 @@
     },
     "SingleEditionMintableCreator": {
       "address": "0x4500590AfC7f12575d613457aF01F06b1eEE57a3"
+    },
+    "SingleEditionMintable": {
+      "address": "0x9e5cc227fdd7a15246d295388e9444a597a0447b"
     }
   }
 }

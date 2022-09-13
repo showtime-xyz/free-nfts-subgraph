@@ -1,5 +1,6 @@
 import { Address, BigInt, Bytes, ethereum, log } from "@graphprotocol/graph-ts";
 import { CreatedEdition as CreatedEditionEvent } from "../generated/SingleEditionMintableCreator/SingleEditionMintableCreator"
+import { SingleEditionMintable } from "../generated/SingleEditionMintableCreator/SingleEditionMintable"
 import { FreeNFTDrop } from "../generated/schema";
 
 function log_toString(log: ethereum.Log): string {
@@ -11,28 +12,28 @@ function logs_toString(logs: Array<ethereum.Log>): string {
 }
 
 function processTimeLimitSet(event: CreatedEditionEvent, timeLimitSet: ethereum.Log): void {
+  let collectionAddress = event.params.editionContractAddress;
   // the parameters are not indexed, collection and deadline are packed into data, e.g.:
   // "data": "0x000000000000000000000000c39231fe8f61f1860c0cc0a9c8a016e46a8d0e7e0000000000000000000000000000000000000000000000000000000063435af8"
 
   // no 0x prefix
   let collectionAddressStr = timeLimitSet.data.toHexString().slice(2 + 24, 2 + 64).toLowerCase();
-  if (!event.params.editionContractAddress.toHexString().toLowerCase().includes(collectionAddressStr)) {
+  if (!collectionAddress.toHexString().toLowerCase().includes(collectionAddressStr)) {
     log.warning("In tx {}, collection address {} in TimeLimitSetEvent does not match editionContractAddress {} in CreatedEditionEvent",
-    [event.transaction.hash.toHexString(), collectionAddressStr, event.params.editionContractAddress.toHexString()]);
+    [event.transaction.hash.toHexString(), collectionAddressStr, collectionAddress.toHexString()]);
     return;
   }
 
-  let entity = new FreeNFTDrop(event.params.editionContractAddress);
+  let entity = new FreeNFTDrop(collectionAddress);
   entity.creator = event.params.creator
   entity.editionSize = event.params.editionSize
   entity.deadline = BigInt.fromUnsignedBytes(Bytes.fromHexString(timeLimitSet.data.toHexString().slice(2 + 64, 2 + 128)));
 
-  // let edition = SingleEditionMintable.bind(collectionAddress);
-  // entity.name = edition.name();
-  // edition.description = edition.description();
-  // edition.animationUrl = edition.getURIs()[0];
-  // edition.imageUrl = edition.getURIs()[2];
-
+  let edition = SingleEditionMintable.bind(collectionAddress);
+  entity.name = edition.name();
+  entity.description = edition.description();
+  entity.imageUrl = edition.getURIs().getValue0();
+  entity.animationUrl = edition.getURIs().getValue2();
   entity.save()
 }
 
