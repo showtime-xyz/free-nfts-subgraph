@@ -11,3 +11,15 @@ type FreeNFTDrop @entity(immutable: true) {
   animationUrl: String
   imageUrl: String
 }
+
+
+type FreeNFTTransfer @entity(immutable: true) {
+  "multiple transfers may happen in the same transaction, so we use <tx hash>-<log index> as the id"
+  id: String!
+  freeNftDrop: FreeNFTDrop! # address
+  transferredAt: BigInt! # block timestamp
+
+  from: Bytes! # address
+  to: Bytes! # address
+  tokenId: BigInt! # uint256
+}
