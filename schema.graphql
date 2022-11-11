@@ -10,16 +10,18 @@ type FreeNFTDrop @entity(immutable: true) {
   description: String
   animationUrl: String
   imageUrl: String
+  
+  balances: [FreeNFTBalance!]! @derivedFrom(field: "drop")
 }
 
 
-type FreeNFTTransfer @entity(immutable: true) {
-  "multiple transfers may happen in the same transaction, so we use <tx hash>-<log index> as the id"
-  id: String!
-  freeNftDrop: FreeNFTDrop! # address
-  transferredAt: BigInt! # block timestamp
+type FreeNFTBalance @entity(immutable: true) {
+  "The owner is <drop address>-<owner address>"
+  id: String! # address
 
-  from: Bytes! # address
-  to: Bytes! # address
-  tokenId: BigInt! # uint256
+  address: Bytes! # owner address
+  quantity: BigInt! # address
+  drop: FreeNFTDrop!
+
+  updatedAt: BigInt! # block timestamp
 }

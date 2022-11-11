@@ -1,10 +1,11 @@
 import { BigInt, Bytes, ethereum, log } from "@graphprotocol/graph-ts";
 
-import { log_toString } from './helpers';
+import { log_toString } from '../helpers';
 
-import { CreatedEdition as CreatedEditionEvent } from "../generated/SingleEditionMintableCreator/SingleEditionMintableCreator"
-import { SingleEditionMintable } from "../generated/SingleEditionMintableCreator/SingleEditionMintable"
-import { FreeNFTDrop } from "../generated/schema";
+import { CreatedEdition as CreatedEditionEvent } from "../../generated/SingleEditionMintableCreator/SingleEditionMintableCreator"
+import { SingleEditionMintable } from "../../generated/SingleEditionMintableCreator/SingleEditionMintable"
+import { FreeNFTDrop } from "../../generated/schema";
+import { SingleEditionMintable as SingleEditionMintableTemplate } from "../../generated/templates";
 
 
 export function processTimeLimitSet(event: CreatedEditionEvent, timeLimitSet: ethereum.Log): void {
@@ -38,6 +39,8 @@ export function processTimeLimitSet(event: CreatedEditionEvent, timeLimitSet: et
   entity.imageUrl = edition.getURIs().getValue0();
   entity.animationUrl = edition.getURIs().getValue2();
   entity.save()
+  
+  SingleEditionMintableTemplate.create(collectionAddress);
 }
 
 
