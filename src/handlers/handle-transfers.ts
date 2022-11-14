@@ -33,7 +33,7 @@ function updateBalance(
     balance = new FreeNFTBalance(id);
 
     balance.address = address;
-    balance.quantity = new BigInt(0);
+    balance.quantity = BigInt.fromI32(0);
     balance.drop = drop.id;
   }
   
@@ -49,11 +49,11 @@ function updateBalance(
   }
   
   if (isSender) {
-    balance.quantity = balance.quantity.minus(new BigInt(1));
+    balance.quantity = balance.quantity.minus(BigInt.fromI32(1));
   }
   
   else {
-    balance.quantity = balance.quantity.plus(new BigInt(1));
+    balance.quantity = balance.quantity.plus(BigInt.fromI32(1));
   }
 
   balance.updatedAt = event.block.timestamp;
@@ -61,19 +61,8 @@ function updateBalance(
 }
 
 
-export function handleTransfer(event: TransferEvent): void {
-  let receipt = event.receipt;
-
-  if (!receipt) {
-    log.critical(
-      "No receipt in tx {}",
-      [event.transaction.hash.toHex()]
-    );
-
-    return;
-  }
-
-  if (!receipt.contractAddress) {
+export default function handleTransfer(event: TransferEvent): void {
+  if (!event.address) {
     log.critical(
       "No contract address in tx {}",
       [event.transaction.hash.toHex()]
@@ -81,8 +70,8 @@ export function handleTransfer(event: TransferEvent): void {
 
     return;
   }
-  
-  let editionAddress = receipt.contractAddress;
+
+  let editionAddress = event.address;
   
   let drop = FreeNFTDrop.load(Bytes.fromHexString(editionAddress.toHexString()));
   

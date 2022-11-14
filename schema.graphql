@@ -15,7 +15,7 @@ type FreeNFTDrop @entity(immutable: true) {
 }
 
 
-type FreeNFTBalance @entity(immutable: true) {
+type FreeNFTBalance @entity(immutable: false) {
   "The owner is <drop address>-<owner address>"
   id: String! # address
 
