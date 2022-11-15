@@ -16,11 +16,11 @@ type FreeNFTDrop @entity(immutable: true) {
 
 
 type FreeNFTBalance @entity(immutable: false) {
-  "The owner is <drop address>-<owner address>"
+  "The id is <drop address>-<owner address>"
   id: String! # address
 
   address: Bytes! # owner address
-  quantity: BigInt! # address
+  quantity: BigInt! # amount of token that `address` owns
   drop: FreeNFTDrop!
 
   updatedAt: BigInt! # block timestamp
