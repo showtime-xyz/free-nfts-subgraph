@@ -28,4 +28,25 @@ dataSources:
         - event: CreatedEdition(indexed uint256,indexed address,uint256,address)
           handler: handleCreatedEdition
           receipt: true
-      file: ./src/event-handlers.ts
+      file: ./src/handlers/handle-created-edition.ts
+
+templates:
+  - kind: ethereum/contract
+    name: SingleEditionMintable
+    network: matic
+    source:
+      abi: SingleEditionMintable
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - FreeNFTBalance
+      abis:
+        - name: SingleEditionMintable
+          file: ./abis/SingleEditionMintable.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleTransfer
+          receipt: true
+      file: ./src/handlers/handle-transfers.ts

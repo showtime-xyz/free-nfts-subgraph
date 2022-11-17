@@ -1,17 +1,14 @@
-import { Address, BigInt, Bytes, ethereum, log } from "@graphprotocol/graph-ts";
-import { CreatedEdition as CreatedEditionEvent } from "../generated/SingleEditionMintableCreator/SingleEditionMintableCreator"
-import { SingleEditionMintable } from "../generated/SingleEditionMintableCreator/SingleEditionMintable"
-import { FreeNFTDrop } from "../generated/schema";
+import { BigInt, Bytes, ethereum, log } from "@graphprotocol/graph-ts";
 
-function log_toString(log: ethereum.Log): string {
-  return log.topics[0].toHexString();
-}
+import { log_toString } from '../helpers';
 
-function logs_toString(logs: Array<ethereum.Log>): string {
-  return logs.map(log_toString).join(", ");
-}
+import { CreatedEdition as CreatedEditionEvent } from "../../generated/SingleEditionMintableCreator/SingleEditionMintableCreator"
+import { SingleEditionMintable } from "../../generated/SingleEditionMintableCreator/SingleEditionMintable"
+import { FreeNFTDrop } from "../../generated/schema";
+import { SingleEditionMintable as SingleEditionMintableTemplate } from "../../generated/templates";
 
-function processTimeLimitSet(event: CreatedEditionEvent, timeLimitSet: ethereum.Log): void {
+
+export function processTimeLimitSet(event: CreatedEditionEvent, timeLimitSet: ethereum.Log): void {
   let collectionAddress = event.params.editionContractAddress;
   // the parameters are not indexed, collection and deadline are packed into data, e.g.:
   // "data": "0x000000000000000000000000c39231fe8f61f1860c0cc0a9c8a016e46a8d0e7e0000000000000000000000000000000000000000000000000000000063435af8"
@@ -42,9 +39,12 @@ function processTimeLimitSet(event: CreatedEditionEvent, timeLimitSet: ethereum.
   entity.imageUrl = edition.getURIs().getValue0();
   entity.animationUrl = edition.getURIs().getValue2();
   entity.save()
+  
+  SingleEditionMintableTemplate.create(collectionAddress);
 }
 
-export function handleCreatedEdition(event: CreatedEditionEvent): void {
+
+export default function handleCreatedEdition(event: CreatedEditionEvent): void {
   let receipt = event.receipt;
   if (!receipt) {
     log.critical("No receipt for event in tx {}", [event.transaction.hash.toHex()]);

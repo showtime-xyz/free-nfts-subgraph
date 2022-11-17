@@ -10,4 +10,18 @@ type FreeNFTDrop @entity(immutable: true) {
   description: String
   animationUrl: String
   imageUrl: String
+  
+  balances: [FreeNFTBalance!]! @derivedFrom(field: "drop")
+}
+
+
+type FreeNFTBalance @entity(immutable: false) {
+  "The id is <drop address>-<owner address>"
+  id: String! # address
+
+  address: Bytes! # owner address
+  quantity: BigInt! # amount of token that `address` owns
+  drop: FreeNFTDrop!
+
+  updatedAt: BigInt! # block timestamp
 }
