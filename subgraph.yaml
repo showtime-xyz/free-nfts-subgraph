@@ -30,6 +30,31 @@ dataSources:
           receipt: true
       file: ./src/handlers/handle-created-edition.ts
 
+  - kind: ethereum
+    name: GatedEditionCreator
+    network: matic
+    source:
+      address: "0x50c0013278D798c1cD0b3A0809853fd6D4006e1F"
+      abi: GatedEditionCreator
+      startBlock: 37116758
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - FreeNFTDrop
+      abis:
+        - name: GatedEditionCreator
+          file: ./abis/GatedEditionCreator.json
+        - name: Edition
+          file: ./abis/Edition.json
+      eventHandlers:
+        - event: CreatedEdition(indexed uint256,indexed address,address,string)
+          handler: handleCreatedEdition
+          # should no longer be needed as we get the deadline directly from the Edition
+          # receipt: true
+      file: ./src/handlers/handle-created-edition-v2.ts
+
 templates:
   - kind: ethereum/contract
     name: SingleEditionMintable
