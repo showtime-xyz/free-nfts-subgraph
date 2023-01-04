@@ -39,7 +39,7 @@ export function processTimeLimitSet(event: CreatedEditionEvent, timeLimitSet: et
   entity.imageUrl = edition.getURIs().getValue0();
   entity.animationUrl = edition.getURIs().getValue2();
   entity.save()
-  
+
   SingleEditionMintableTemplate.create(collectionAddress);
 }
 
