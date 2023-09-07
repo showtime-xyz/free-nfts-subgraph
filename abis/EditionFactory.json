@@ -1,0 +1,861 @@
+[
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_showtimeVerifier",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "expected",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "actual",
+        "type": "address"
+      }
+    ],
+    "name": "AddressMismatch",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "DuplicateEdition",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NullAddress",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "VerificationFailed",
+    "type": "error"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "editionId",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "creator",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "editionContractAddress",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "tags",
+        "type": "string"
+      }
+    ],
+    "name": "CreatedEdition",
+    "type": "event"
+  },
+  {
+    "inputs": [
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "editionImpl",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "creatorAddr",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "minterAddr",
+            "type": "address"
+          },
+          {
+            "internalType": "string",
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "description",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "animationUrl",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "imageUrl",
+            "type": "string"
+          },
+          {
+            "internalType": "uint256",
+            "name": "editionSize",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "royaltiesBPS",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "mintPeriodSeconds",
+            "type": "uint256"
+          },
+          {
+            "internalType": "string",
+            "name": "externalUrl",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "creatorName",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "tags",
+            "type": "string"
+          },
+          {
+            "internalType": "address",
+            "name": "operatorFilter",
+            "type": "address"
+          }
+        ],
+        "internalType": "struct EditionData",
+        "name": "data",
+        "type": "tuple"
+      },
+      {
+        "components": [
+          {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "beneficiary",
+                "type": "address"
+              },
+              {
+                "internalType": "address",
+                "name": "context",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "nonce",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "validUntil",
+                "type": "uint256"
+              }
+            ],
+            "internalType": "struct Attestation",
+            "name": "attestation",
+            "type": "tuple"
+          },
+          {
+            "internalType": "bytes",
+            "name": "signature",
+            "type": "bytes"
+          }
+        ],
+        "internalType": "struct SignedAttestation",
+        "name": "signedAttestation",
+        "type": "tuple"
+      }
+    ],
+    "name": "create",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "editionAddress",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "editionImpl",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "creatorAddr",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "minterAddr",
+            "type": "address"
+          },
+          {
+            "internalType": "string",
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "description",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "animationUrl",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "imageUrl",
+            "type": "string"
+          },
+          {
+            "internalType": "uint256",
+            "name": "editionSize",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "royaltiesBPS",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "mintPeriodSeconds",
+            "type": "uint256"
+          },
+          {
+            "internalType": "string",
+            "name": "externalUrl",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "creatorName",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "tags",
+            "type": "string"
+          },
+          {
+            "internalType": "address",
+            "name": "operatorFilter",
+            "type": "address"
+          }
+        ],
+        "internalType": "struct EditionData",
+        "name": "data",
+        "type": "tuple"
+      },
+      {
+        "internalType": "bytes",
+        "name": "packedRecipients",
+        "type": "bytes"
+      },
+      {
+        "components": [
+          {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "beneficiary",
+                "type": "address"
+              },
+              {
+                "internalType": "address",
+                "name": "context",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "nonce",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "validUntil",
+                "type": "uint256"
+              }
+            ],
+            "internalType": "struct Attestation",
+            "name": "attestation",
+            "type": "tuple"
+          },
+          {
+            "internalType": "bytes",
+            "name": "signature",
+            "type": "bytes"
+          }
+        ],
+        "internalType": "struct SignedAttestation",
+        "name": "signedAttestation",
+        "type": "tuple"
+      }
+    ],
+    "name": "createWithBatch",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "editionAddress",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "editionImpl",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "creatorAddr",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "minterAddr",
+            "type": "address"
+          },
+          {
+            "internalType": "string",
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "description",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "animationUrl",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "imageUrl",
+            "type": "string"
+          },
+          {
+            "internalType": "uint256",
+            "name": "editionSize",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "royaltiesBPS",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "mintPeriodSeconds",
+            "type": "uint256"
+          },
+          {
+            "internalType": "string",
+            "name": "externalUrl",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "creatorName",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "tags",
+            "type": "string"
+          },
+          {
+            "internalType": "address",
+            "name": "operatorFilter",
+            "type": "address"
+          }
+        ],
+        "internalType": "struct EditionData",
+        "name": "data",
+        "type": "tuple"
+      },
+      {
+        "internalType": "address",
+        "name": "pointer",
+        "type": "address"
+      },
+      {
+        "components": [
+          {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "beneficiary",
+                "type": "address"
+              },
+              {
+                "internalType": "address",
+                "name": "context",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "nonce",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "validUntil",
+                "type": "uint256"
+              }
+            ],
+            "internalType": "struct Attestation",
+            "name": "attestation",
+            "type": "tuple"
+          },
+          {
+            "internalType": "bytes",
+            "name": "signature",
+            "type": "bytes"
+          }
+        ],
+        "internalType": "struct SignedAttestation",
+        "name": "signedAttestation",
+        "type": "tuple"
+      }
+    ],
+    "name": "createWithBatch",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "editionAddress",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "editionImpl",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "editionId",
+        "type": "uint256"
+      }
+    ],
+    "name": "getEditionAtId",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "editionImpl",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "creatorAddr",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "minterAddr",
+            "type": "address"
+          },
+          {
+            "internalType": "string",
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "description",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "animationUrl",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "imageUrl",
+            "type": "string"
+          },
+          {
+            "internalType": "uint256",
+            "name": "editionSize",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "royaltiesBPS",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "mintPeriodSeconds",
+            "type": "uint256"
+          },
+          {
+            "internalType": "string",
+            "name": "externalUrl",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "creatorName",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "tags",
+            "type": "string"
+          },
+          {
+            "internalType": "address",
+            "name": "operatorFilter",
+            "type": "address"
+          }
+        ],
+        "internalType": "struct EditionData",
+        "name": "data",
+        "type": "tuple"
+      }
+    ],
+    "name": "getEditionId",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "editionId",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "pure",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "editionAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "to",
+        "type": "address"
+      },
+      {
+        "components": [
+          {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "beneficiary",
+                "type": "address"
+              },
+              {
+                "internalType": "address",
+                "name": "context",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "nonce",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "validUntil",
+                "type": "uint256"
+              }
+            ],
+            "internalType": "struct Attestation",
+            "name": "attestation",
+            "type": "tuple"
+          },
+          {
+            "internalType": "bytes",
+            "name": "signature",
+            "type": "bytes"
+          }
+        ],
+        "internalType": "struct SignedAttestation",
+        "name": "signedAttestation",
+        "type": "tuple"
+      }
+    ],
+    "name": "mint",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "editionAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "bytes",
+        "name": "packedRecipients",
+        "type": "bytes"
+      },
+      {
+        "components": [
+          {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "beneficiary",
+                "type": "address"
+              },
+              {
+                "internalType": "address",
+                "name": "context",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "nonce",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "validUntil",
+                "type": "uint256"
+              }
+            ],
+            "internalType": "struct Attestation",
+            "name": "attestation",
+            "type": "tuple"
+          },
+          {
+            "internalType": "bytes",
+            "name": "signature",
+            "type": "bytes"
+          }
+        ],
+        "internalType": "struct SignedAttestation",
+        "name": "signedAttestation",
+        "type": "tuple"
+      }
+    ],
+    "name": "mintBatch",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "numMinted",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "editionAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "pointer",
+        "type": "address"
+      },
+      {
+        "components": [
+          {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "beneficiary",
+                "type": "address"
+              },
+              {
+                "internalType": "address",
+                "name": "context",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "nonce",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "validUntil",
+                "type": "uint256"
+              }
+            ],
+            "internalType": "struct Attestation",
+            "name": "attestation",
+            "type": "tuple"
+          },
+          {
+            "internalType": "bytes",
+            "name": "signature",
+            "type": "bytes"
+          }
+        ],
+        "internalType": "struct SignedAttestation",
+        "name": "signedAttestation",
+        "type": "tuple"
+      }
+    ],
+    "name": "mintBatch",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "numMinted",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "showtimeVerifier",
+    "outputs": [
+      {
+        "internalType": "contract IShowtimeVerifier",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "components": [
+          {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "beneficiary",
+                "type": "address"
+              },
+              {
+                "internalType": "address",
+                "name": "context",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "nonce",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "validUntil",
+                "type": "uint256"
+              }
+            ],
+            "internalType": "struct Attestation",
+            "name": "attestation",
+            "type": "tuple"
+          },
+          {
+            "internalType": "bytes",
+            "name": "signature",
+            "type": "bytes"
+          }
+        ],
+        "internalType": "struct SignedAttestation",
+        "name": "signedAttestation",
+        "type": "tuple"
+      },
+      {
+        "internalType": "address",
+        "name": "edition",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "relayer",
+        "type": "address"
+      }
+    ],
+    "name": "validateAttestation",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  }
+]
