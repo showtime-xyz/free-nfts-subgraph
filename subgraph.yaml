@@ -55,6 +55,35 @@ dataSources:
           # receipt: true
       file: ./src/handlers/handle-created-edition-v2.ts
 
+  - kind: ethereum
+    name: EditionFactory
+    network: matic
+    source:
+      address: "0x0601Fe5e374F1Cd6Cce4237F95bC1D2e3E39E087"
+      abi: EditionFactory
+      startBlock: 37116758
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - FreeNFTDrop
+      abis:
+        - name: EditionFactory
+          file: ./abis/EditionFactory.json
+        - name: EditionV3
+          file: ./abis/EditionV3.json
+        - name: MultiBatchEdition
+          file: ./abis/MultiBatchEdition.json
+        - name: SingleBatchEdition
+          file: ./abis/SingleBatchEdition.json
+      eventHandlers:
+        - event: CreatedEdition(indexed uint256,indexed address,address,string)
+          handler: handleCreatedEdition
+          # should no longer be needed as we get the deadline directly from the Edition
+          # receipt: true
+      file: ./src/handlers/handle-created-edition-v3.ts
+
 templates:
   - kind: ethereum/contract
     name: SingleEditionMintable
